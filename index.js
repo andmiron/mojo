@@ -1,13 +1,12 @@
-import build from './src/app.js'
+import buildApp from './src/app.js'
 import loggerOpts from './src/logger.js'
 import closeWithGrace from 'close-with-grace'
 
-const app = build({
+const app = await buildApp({
    logger: loggerOpts,
 })
 
 const port = process.env.PORT || 3000
-const host = process.env.HOST || 'localhost'
 
 closeWithGrace(async ({ signal, err }) => {
    if (err) {
@@ -18,4 +17,4 @@ closeWithGrace(async ({ signal, err }) => {
    await app.close()
 })
 
-await app.listen({ host, port })
+await app.listen({ port })
