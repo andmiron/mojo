@@ -7,6 +7,7 @@ const app = await buildApp({
 })
 
 const port = process.env.PORT || 3000
+const host = process.env.HOST || '127.0.0.1'
 
 closeWithGrace(async ({ signal, err }) => {
    if (err) {
@@ -17,4 +18,4 @@ closeWithGrace(async ({ signal, err }) => {
    await app.close()
 })
 
-await app.listen({ port })
+await app.listen({ port, host })
