@@ -5,7 +5,8 @@
    "scripts": {
       "format": "prettier --write .",
       "lint": "eslint --fix .",
-      "dev": "node --watch index.js"
+      "dev": "node --watch index.js",
+      "start": "node index.js"
    },
    "dependencies": {
       "@fastify/error": "^4.0.0",
