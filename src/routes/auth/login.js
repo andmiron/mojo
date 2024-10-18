@@ -6,6 +6,7 @@ export default function loginRoute(fastify, opts, done) {
       url: '/login',
       schema: {
          description: 'User login route',
+         tags: ['auth'],
          body: {
             type: 'object',
             required: ['email', 'password'],
@@ -67,10 +68,11 @@ export default function loginRoute(fastify, opts, done) {
          )
 
          await reply
-            .cookie('accessToken', accessToken, {
+            .setCookie('accessToken', accessToken, {
                path: '/',
                httpOnly: true,
                maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60,
+               sameSite: true,
             })
             .send({
                success: true,

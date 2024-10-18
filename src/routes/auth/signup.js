@@ -7,6 +7,7 @@ export default function signupRoute(fastify, opts, done) {
       url: '/signup',
       schema: {
          description: 'User signup route',
+         tags: ['auth'],
          body: {
             type: 'object',
             required: ['email', 'password'],

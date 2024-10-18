@@ -3,8 +3,11 @@ export default function (fastify, opts, done) {
       '/health',
       {
          schema: {
+            description: 'Health check request',
+            tags: ['health-check'],
             response: {
                200: {
+                  description: 'API and DB are healthy',
                   type: 'object',
                   properties: {
                      status: { type: 'string' },
@@ -12,6 +15,7 @@ export default function (fastify, opts, done) {
                   },
                },
                500: {
+                  description: 'API or DB error',
                   type: 'object',
                   properties: {
                      status: { type: 'string' },

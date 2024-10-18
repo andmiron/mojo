@@ -10,6 +10,7 @@ import postgresPlugin from '@fastify/postgres'
 import healthCheckRoute from './routes/healthCheck.js'
 import signupRoute from './routes/auth/signup.js'
 import loginRoute from './routes/auth/login.js'
+import logoutRoute from './routes/auth/logout.js'
 
 export default async function (opts) {
    const app = fastify(opts)
@@ -29,6 +30,13 @@ export default async function (opts) {
             description: 'Documentation for API endpoints.',
             version: '1.0.0',
          },
+         tags: [
+            { name: 'auth', description: 'Auth related end-points' },
+            {
+               name: 'health-check',
+               description: 'API and database health check',
+            },
+         ],
          host: 'localhost',
          schemes: ['http', 'https'],
          consumes: ['application/json'],
@@ -54,11 +62,27 @@ export default async function (opts) {
    app.register(fastifyCookie)
    app.register(fastifyJwt, {
       secret: process.env.JWT_SECRET,
+      cookie: {
+         cookieName: 'accessToken',
+         signed: false,
+      },
+   })
+
+   app.decorate('authenticate', async function (request, reply) {
+      try {
+         await request.jwtVerify()
+      } catch (err) {
+         reply.code(401).send({
+            success: false,
+            message: err.message,
+         })
+      }
    })
 
    app.register(healthCheckRoute)
    app.register(signupRoute, { prefix: '/api/v1/auth' })
    app.register(loginRoute, { prefix: '/api/v1/auth' })
+   app.register(logoutRoute, { prefix: '/api/v1/auth' })
 
    await app.ready()
    app.swagger()
