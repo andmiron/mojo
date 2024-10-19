@@ -1,9 +1,12 @@
 import buildApp from './src/app.js'
-import loggerOpts from './src/logger.js'
 import closeWithGrace from 'close-with-grace'
 
 const app = await buildApp({
-   logger: loggerOpts,
+   logger: {
+      transport: {
+         target: 'pino-pretty',
+      },
+   },
 })
 
 const port = process.env.PORT || 3000

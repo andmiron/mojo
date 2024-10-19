@@ -7,6 +7,7 @@ import fastifyCookie from '@fastify/cookie'
 import swagger from '@fastify/swagger'
 import swaggerUI from '@fastify/swagger-ui'
 import postgresPlugin from '@fastify/postgres'
+import fastifyMailer from 'fastify-mailer'
 import healthCheckRoute from './routes/healthCheck.js'
 import signupRoute from './routes/auth/signup.js'
 import loginRoute from './routes/auth/login.js'
@@ -65,6 +66,17 @@ export default async function (opts) {
       cookie: {
          cookieName: 'accessToken',
          signed: false,
+      },
+   })
+
+   app.register(fastifyMailer, {
+      transport: {
+         host: process.env.SMTP_HOST,
+         port: process.env.SMTP_PORT,
+         auth: {
+            user: process.env.SMTP_USERNAME,
+            pass: process.env.SMTP_PASSWORD,
+         },
       },
    })
 
