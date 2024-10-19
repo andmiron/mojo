@@ -22,7 +22,6 @@ export default function signupRoute(fastify, opts, done) {
             201: {
                description: 'User signup success',
                type: 'object',
-               required: ['userId', 'email'],
                properties: {
                   status: { type: 'boolean', default: true },
                   userId: { type: 'string', format: 'uuid' },
@@ -30,12 +29,21 @@ export default function signupRoute(fastify, opts, done) {
                },
             },
             400: {
-               description: 'User signup failed',
+               description: 'User signup failed: email already exists',
                type: 'object',
                properties: {
                   success: { type: 'boolean', default: false },
                   message: { type: 'string' },
                   value: { type: 'string', format: 'email' },
+               },
+            },
+            500: {
+               description:
+                  'User signup failed: verification email sending error',
+               type: 'object',
+               properties: {
+                  success: { type: 'boolean', default: false },
+                  message: { type: 'string' },
                },
             },
          },
@@ -84,7 +92,10 @@ export default function signupRoute(fastify, opts, done) {
                   .send({ success: false, message: err.message, value: email })
             } else {
                request.log.error(err.message)
-               await reply.send(err)
+               await reply.code(500).send({
+                  success: false,
+                  message: 'Error sending an email and signing up a user',
+               })
             }
          }
       },

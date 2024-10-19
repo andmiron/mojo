@@ -4,7 +4,7 @@ export default function (fastify, opts, done) {
       {
          schema: {
             description: 'Health check request',
-            tags: ['health-check'],
+            tags: ['healthcheck'],
             response: {
                200: {
                   description: 'API and DB are healthy',

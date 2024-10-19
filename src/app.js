@@ -12,6 +12,7 @@ import healthCheckRoute from './routes/healthCheck.js'
 import signupRoute from './routes/auth/signup.js'
 import loginRoute from './routes/auth/login.js'
 import logoutRoute from './routes/auth/logout.js'
+import verifyRoute from './routes/auth/verify.js'
 
 export default async function (opts) {
    const app = fastify(opts)
@@ -32,9 +33,9 @@ export default async function (opts) {
             version: '1.0.0',
          },
          tags: [
-            { name: 'auth', description: 'Auth related end-points' },
+            { name: 'auth', description: 'Authentication related end-points' },
             {
-               name: 'health-check',
+               name: 'healthcheck',
                description: 'API and database health check',
             },
          ],
@@ -95,6 +96,7 @@ export default async function (opts) {
    app.register(signupRoute, { prefix: '/api/v1/auth' })
    app.register(loginRoute, { prefix: '/api/v1/auth' })
    app.register(logoutRoute, { prefix: '/api/v1/auth' })
+   app.register(verifyRoute, { prefix: '/api/v1/auth' })
 
    await app.ready()
    app.swagger()
