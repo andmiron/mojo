@@ -8,6 +8,8 @@ import swagger from '@fastify/swagger'
 import swaggerUI from '@fastify/swagger-ui'
 import postgresPlugin from '@fastify/postgres'
 import fastifyMailer from 'fastify-mailer'
+import fastifyCors from '@fastify/cors'
+import fastifyRateLimit from '@fastify/rate-limit'
 import healthCheckRoute from './routes/healthCheck.js'
 import signupRoute from './routes/auth/signup.js'
 import loginRoute from './routes/auth/login.js'
@@ -61,6 +63,8 @@ export default async function (opts) {
       },
    })
 
+   app.register(fastifyCors)
+   app.register(fastifyRateLimit)
    app.register(fastifyCookie)
    app.register(fastifyJwt, {
       secret: process.env.JWT_SECRET,
